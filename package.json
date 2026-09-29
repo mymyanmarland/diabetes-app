@@ -1,0 +1,8 @@
+{
+  "name": "diabetes-lifestyle-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Diabetes Lifestyle Management System - Tech Stack 2 (Node/Express/SQLite/vanilla JS)",
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "express": "^4.21.2" }
+}
