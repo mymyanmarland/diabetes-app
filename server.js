@@ -188,7 +188,7 @@ app.post('/api/auth/logout', (req, res) => {
 app.get('/api/auth/me', auth, (req, res) => res.json({ user: req.user }));
 app.post('/api/auth/password', auth, async (req, res) => {
   const { currentPassword, newPassword } = req.body;
-  if (typeof newPassword !== 'string' || newPassword.length < 6 || newPassword.length > 128)
+  if (typeof currentPassword !== 'string' || typeof newPassword !== 'string' || newPassword.length < 6 || newPassword.length > 128)
     return res.status(400).json({ error: 'password_length' });
   const u = db.prepare('SELECT * FROM users WHERE id=?').get(req.user.id);
   if (!(await verifyPassword(currentPassword, u.password_hash)))
@@ -200,6 +200,8 @@ app.post('/api/auth/password', auth, async (req, res) => {
   res.json({ ok: true });
 });
 app.delete('/api/auth/account', auth, async (req, res) => {
+  if (typeof req.body.password !== 'string')
+    return res.status(400).json({ error: 'invalid_request' });
   const u = db.prepare('SELECT * FROM users WHERE id=?').get(req.user.id);
   if (!(await verifyPassword(req.body.password, u.password_hash)))
     return res.status(401).json({ error: 'invalid_credentials' });
